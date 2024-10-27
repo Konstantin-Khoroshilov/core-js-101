@@ -27,8 +27,11 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  if (num % 5 === 0 && num % 3 === 0) { return 'FizzBuzz'; }
+  if (num % 5 === 0) { return 'Buzz'; }
+  if (num % 3 === 0) { return 'Fizz'; }
+  return num;
 }
 
 
@@ -43,8 +46,9 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  if (n === 1) { return 1; }
+  return n * getFactorial(n - 1);
 }
 
 
@@ -60,8 +64,12 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  let res = 0;
+  for (let i = n1; i <= n2; i += 1) {
+    res += i;
+  }
+  return res;
 }
 
 
@@ -80,11 +88,13 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  // Треугольник существует только тогда, когда сумма любых двух его сторон больше третьей.
+  const check1 = a + b > c;
+  const check2 = a + c > b;
+  const check3 = b + c > a;
+  return check1 === check2 === check3;
 }
-
-
 /**
  * Returns true, if two specified axis-aligned rectangles overlap, otherwise false.
  * Each rectangle representing by object
@@ -117,8 +127,26 @@ function isTriangle(/* a, b, c */) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  // *  {
+  // *     top: 5,
+  // *     left: 5,
+  // *     width: 20,
+  // *     height: 10
+  // *  }
+  //   Прямоугольники НЕ пересекаются:
+  // - если левый край первого лежит правее правого края второго
+  // - или левый край второго лежит правее правого края первого
+  // - или верхний край первого лежит ниже нижнего края второго
+  // - или верхний край второго лежит ниже нижнего края первого
+  if (rect1.left > rect2.left + rect2.width
+    || rect2.left > rect1.left + rect1.width
+    || rect1.top > rect2.top + rect2.height
+    || rect2.top > rect1.top + rect1.height
+  ) {
+    return false;
+  }
+  return true;
 }
 
 
@@ -148,8 +176,8 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  return (point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2 < circle.radius ** 2;
 }
 
 
@@ -164,8 +192,17 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  let res = null;
+  const arr = str.split('');
+  for (let i = 0; i < arr.length; i += 1) {
+    const filteredArr = arr.filter((item) => item === arr[i]);
+    if (filteredArr.length === 1) {
+      res = arr[i];
+      break;
+    }
+  }
+  return res;
 }
 
 
