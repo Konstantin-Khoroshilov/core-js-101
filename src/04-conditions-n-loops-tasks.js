@@ -318,8 +318,20 @@ function isCreditCardNumber(ccn) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const arr = String(num).split('');
+  const sum = arr.reduce((res, item) => {
+    // eslint-disable-next-line no-param-reassign
+    res += +item;
+    return res;
+  }, 0);
+  return sum > 9
+    ? String(sum).split('').reduce((res, item) => {
+      // eslint-disable-next-line no-param-reassign
+      res += +item;
+      return res;
+    }, 0)
+    : sum;
 }
 
 
@@ -344,8 +356,46 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const bracketsConfig = [['[', ']'], ['(', ')'], ['{', '}'], ['<', '>']];
+  if (str.length % 2 !== 0) { return false; }
+  if (str.length === 0) { return true; }
+  let res = true;
+  const stack = [];
+  const getConfig = (bracket) => {
+    const config = bracketsConfig.find(
+      (globalConfig) => globalConfig.some((configElem) => configElem === bracket),
+    );
+    if (config[0] === config[1]) { return { bracketType: 'both', config }; }
+    if (bracket === config[0]) { return { bracketType: 'opening', config }; }
+    return { bracketType: 'closing', config };
+  };
+  for (let i = 0; i < str.length; i += 1) {
+    const bracket = str[i];
+    const currentConfig = getConfig(bracket);
+    if (currentConfig.bracketType === 'opening') { stack.push(bracket); }
+    if (stack.length === 0 && currentConfig.bracketType === 'closing') {
+      res = false;
+      break;
+    }
+    if (currentConfig.bracketType === 'both') {
+      if (stack[stack.length - 1] === bracket) {
+        stack.pop();
+      } else {
+        stack.push(bracket);
+      }
+    }
+    if (stack.length > 0 && currentConfig.bracketType === 'closing') {
+      if (stack[stack.length - 1] === currentConfig.config[0]) {
+        stack.pop();
+      } else {
+        res = false;
+        break;
+      }
+    }
+  }
+  if (stack.length > 0) { res = false; }
+  return res;
 }
 
 
@@ -369,8 +419,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
